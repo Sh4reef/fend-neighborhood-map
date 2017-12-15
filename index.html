@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+		<!--  Meta  -->
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<title>Neighborhood Map - Sh4reef</title>
+		<!--  Styles  -->
+		<link rel="stylesheet" href="styles/index.processed.css">
+</head>
+
+<body>
+
+		<div class="global-container">
+				<div id="topNavContainer" class="top-nav-container">
+						<div id="topNavTitle" class="top-nav-title">
+								<h4 data-bind="text: updateTitle">Neighborhood Map</h4>
+						</div>
+				</div>
+				<div class="content-container">
+						<div id="sideNavContainer" class="side-nav-container">
+								<div class="menu-bar-icon">
+										<a id="sideNavToggle" href="#">&#9776;</a>
+								</div>
+								<div class="side-nav-title">
+										<span>Bart locations</span>
+								</div>
+								<div class="side-nav-filter">
+										<input data-bind="textInput: searchInput" placeholder="Filter">
+										<!-- 										<input type="button" data-bind="click: filter" value="Filter"> -->
+								</div>
+								<div class="locations-items">
+										<ul data-bind="foreach: currentMarkersArray">
+												<li data-bind="text: name, click: $parent.clickedMarker, event: {mouseover: $parent.mouseOverMarker, mouseout: $parent.mouseOutMarker}"></li>
+										</ul>
+								</div>
+						</div>
+						<div id="mapContainer" class="map-container">
+								<div id="map"></div>
+						</div>
+				</div>
+		</div>
+
+		<!-- Scripts -->
+
+		
+		<script src="scripts/lib/knockout-3.4.2.js"></script>
+<!-- 		<script src="scripts/lib/jquery-ajax-only-1.11.1.js"></script> -->
+<!-- 		<script src="scripts/lib/flickr-api.js"></script> -->
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAaHBe5orHGa0wuVbXKVJboYJzRk9CNMgY"></script>
+		<script>
+				var sideNavToggle = document.getElementById("sideNavToggle");
+				var topNavContainer = document.getElementById("topNavContainer");
+				var sideNavContainer = document.getElementById("sideNavContainer");
+				var mapContainer = document.getElementById("mapContainer");
+				sideNavToggle.addEventListener("click", function() {
+					toggleEffects();
+					// sideNavContainer.classList.toggle("side-nav-container-toggle");
+					// mapContainer.classList.toggle("map-container-toggle");
+					// topNavContainer.classList.toggle("top-nav-container-toggle");
+					// setTimeout(function() {
+					// 	google.maps.event.trigger(map, "resize");
+					// }, 200);
+				});
+				function toggleEffects() {
+					sideNavContainer.classList.toggle("side-nav-container-toggle");
+					mapContainer.classList.toggle("map-container-toggle");
+					topNavContainer.classList.toggle("top-nav-container-toggle");
+					setTimeout(function() {
+						google.maps.event.trigger(map, "resize");
+					}, 200);
+				}
+		</script>
+		<script src="scripts/app.js"></script>
+		<!-- 	<script src="scripts/google-map.js"></script> -->
+</body>
+
+</html>
