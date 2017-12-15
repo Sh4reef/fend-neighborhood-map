@@ -1,3 +1,22 @@
+var sideNavToggle = document.getElementById("sideNavToggle");
+	var topNavContainer = document.getElementById("topNavContainer");
+	var sideNavContainer = document.getElementById("sideNavContainer");
+	var mapContainer = document.getElementById("mapContainer");
+	sideNavToggle.addEventListener("click", function() {
+		toggleEffects();
+	});
+	function toggleEffects() {
+		sideNavContainer.classList.toggle("side-nav-container-toggle");
+		mapContainer.classList.toggle("map-container-toggle");
+		topNavContainer.classList.toggle("top-nav-container-toggle");
+		setTimeout(function() {
+			google.maps.event.trigger(map, "resize");
+		}, 200);
+	}
+
+
+/* ---------------- APP ---------------- */
+
 var map = new google.maps.Map(document.getElementById("map"), {});
 var infoWindow = new google.maps.InfoWindow({
 	maxWidth: 200
