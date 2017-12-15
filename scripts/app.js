@@ -1,4 +1,4 @@
-function initMap() {
+function app() {
 
 	var map = new google.maps.Map(document.getElementById("map"), {});
 	var infoWindow = new google.maps.InfoWindow({
