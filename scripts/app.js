@@ -120,7 +120,7 @@ function initMap() {
 				location: location,
 				marker: marker
 			});
-			map.setCenter(location.location);
+			map.panTo(location.location);
 			map.setZoom(10);
 		};
 
@@ -146,7 +146,7 @@ function initMap() {
 				`<p style="color: black;">${location.formatted_address}</p>` +
 				`<p style="color: black;">${location.location.lat}, ${location.location.lng}</p>`
 			);
-			map.setCenter(location.location);
+			map.panTo(location.location);
 			return infoWindow;
 		};
 
@@ -186,7 +186,7 @@ function initMap() {
 					`<p style="color: black;">${clicked.location.location.lat}, ${clicked.location.location.lng}</p>`
 				);
 
-				map.setCenter(clicked.location.location);
+				map.panTo(clicked.location.location);
 				clearMarkersAnimation(clicked.marker);
 				infoWindow.open(map, clicked.marker);
 			}, 300);
@@ -197,7 +197,7 @@ function initMap() {
 				"https://maps.google.com/mapfiles/ms/icons/green-dot.png"
 			);
 			infoWindow.close();
-			map.setCenter(obj.location.location);
+			map.panTo(obj.location.location);
 		};
 
 		this.mouseOutMarker = function(obj) {
