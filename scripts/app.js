@@ -140,7 +140,11 @@ function initMap() {
 
 		var makeInfoWindow = function(location) {
 			infoWindow.setContent(
-				`<h4 style="color: black;margin:0;">${location.name}</h4>`
+				// `<h4 style="color: black;margin:0;">${location.name}</h4>`
+				`<h4 style="color: black;">${location.name}</h4>` +
+				`<hr>` +
+				`<p style="color: black;">${location.formatted_address}</p>` +
+				`<p style="color: black;">${location.location.lat}, ${location.location.lng}</p>`
 			);
 			map.setCenter(location.location);
 			return infoWindow;
@@ -177,10 +181,9 @@ function initMap() {
 			window.setTimeout(function() {
 				infoWindow.setContent(
 					`<h4 style="color: black;">${clicked.name}</h4>` +
-						`<hr>` +
-						`<p style="color: black;">${clicked.location.formatted_address}</p>` +
-						`<p style="color: black;">${clicked.location.location.lat}, ${clicked
-							.location.location.lng}</p>`
+					`<hr>` +
+					`<p style="color: black;">${clicked.location.formatted_address}</p>` +
+					`<p style="color: black;">${clicked.location.location.lat}, ${clicked.location.location.lng}</p>`
 				);
 
 				map.setCenter(clicked.location.location);
