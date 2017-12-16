@@ -13,7 +13,7 @@ sudo python -m SimpleHTTPServer 80
 ```
 * Or open the **index.html** file directly
 
-### New added
+### New modifications
 * Refactored the infoWindow
 * Moved maps API to be the last script 
 * Added third party API to retreive more data about the clicked marker
