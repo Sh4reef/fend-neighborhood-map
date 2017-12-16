@@ -13,7 +13,7 @@ sudo python -m SimpleHTTPServer 80
 ```
 * Or open the **index.html** file directly
 
-### New modifications
+### modifications #1
 * Refactored the infoWindow
 * Moved maps API to be the last script 
 * Added third party API to retreive more data about the clicked marker
@@ -22,3 +22,7 @@ sudo python -m SimpleHTTPServer 80
 * Retreive photo URL from third party API
 * Added error handler for google map api
 * Avoid cluttering the html
+
+### New modifications #2
+* Markers list filtering improved
+* Error handler for google map api displays error message on the page

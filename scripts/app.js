@@ -31,11 +31,14 @@ function app() {
 
 		/* Filtering if textInput is being used */
 		this.filtering = ko.computed(function() {
-			var checkString = function(str, input) {
-				return str.substring(0, input.length) === input ? true : false;
-			};
 			var textInput = this.searchInput().toLowerCase();
 			var filteredArray;
+			var checkString = function(str, input) {
+				// Using substring for search is very strict as I noticed
+				/* return str.substring(0, input.length) === input ? true : false; */
+				// Using indexOf is much better 
+				return str.indexOf(input, 0) !== -1 ? true : false;
+			};
 			/* Using Ternary Operator to set new filtered array to filteredArray variable */
 			filteredArray = !textInput
 				? this.markersArray()
@@ -238,7 +241,9 @@ function app() {
 };
 
 function appError() {
-	console.log('Error loading the map.');
+	var errorMessage = 'Error loading the map, Please try again.';
+	document.getElementById('map').append(`<h3 id="error-message">${errorMessage}</h3>`);
+	alert(errorMessage);
 }
 
 var sideNavToggle = document.getElementById("sideNavToggle");
