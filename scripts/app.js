@@ -265,6 +265,6 @@ function app() {
 
 function appError() {
 	var errorMessage = 'Error loading the map, Please try again.';
-	document.getElementById('map').append(`<h3 id="error-message">${errorMessage}</h3>`);
+	document.getElementById('map').appendChild(`<h3 id="error-message">${errorMessage}</h3>`);
 	alert(errorMessage);
 }
