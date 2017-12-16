@@ -2,5 +2,6 @@ scripts/google-map.js
 scripts/index.min.js
 scripts/index.min.js.map
 scripts/lib/flickr-api.js
-scripts/lib/jquery-ajax-only-1.11.1.js
-styles/
+styles/index.processed.min.css
+styles/index.processed.min.css.map
+styles/index.scss

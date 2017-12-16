@@ -59,55 +59,46 @@ function app() {
 		/* Initial 5 locations array */
 		var initialLocations = [
 			{
-				formatted_address:
-					"Al Masjid Al Haram Rd, Al Aziziyah, Mecca 24243, Saudi Arabia",
-				name: "Al Baik Aziziya Makkah",
+				name: "Madame Tussauds Hollywood",
 				location: {
-					lat: 21.4169188,
-					lng: 39.86129149999999
+					lat: 34.10173964915283,
+					lng: -118.34151327610016
 				}
 			},
 			{
-				formatted_address:
-					"Block #2443 3rd Ring Road, Arrusayfah District 24232-7384, Makkah, Saudi Arabia, Mecca Saudi Arabia",
-				name: "Subway 3rd Ring Road",
+				name: "Dodger Stadium",
 				location: {
-					lat: 21.407297,
-					lng: 39.783555999999976
+					lat: 34.07292776671805,
+					lng: -118.24086718929605
+
 				}
 			},
 			{
-				formatted_address: "Mecca Saudi Arabia",
-				name: "Masjid al-Haram",
+				name: "Tsujita LA Artisan Noodle",
 				location: {
-					lat: 21.42287139999999,
-					lng: 39.8257347
+					lat: 34.03964660254267,
+					lng: -118.44261595222942
 				}
 			},
 			{
-				formatted_address:
-					"Makkah Mall, King Abdullah Rd, Al Jamiah, Mecca 24246, Saudi Arabia",
-				name: "Makkah Mall",
+				name: "The Wizarding World of Harry Potter",
 				location: {
-					lat: 21.3910788,
-					lng: 39.884588800000074
+					lat: 34.138443,
+					lng: -118.354056
 				}
 			},
 			{
-				formatted_address: "Ash Shati, Jeddah 23417, Saudi Arabia",
-				name: "Jeddah Waterfront",
+				name: "Natural History Museum of Los Angeles County",
 				location: {
-					lat: 21.5882449,
-					lng: 39.10790959999997
+					lat: 34.016828819509556,
+					lng: -118.28882932662964
 				}
 			},
 			{
-				formatted_address:
-					"Al Kurnaysh Rd, Ash Shati, Jeddah 21312, Saudi Arabia",
-				name: "AlShallal Theme Park",
+				name: "Laemmle's Royal Theater",
 				location: {
-					lat: 21.5678998,
-					lng: 39.11104309999996
+					lat: 34.04561239986859,
+					lng: -118.4529514332816
 				}
 			}
 		];
@@ -137,9 +128,7 @@ function app() {
 
 		var addListenersForMarker = function(location, marker) {
 			marker.addListener("click", function() {
-				makeInfoWindow(location);
-				infoWindow.open(map, marker);
-				clearMarkersAnimation(marker);
+				getMoreDetails(location, marker);
 			});
 			marker.addListener("mouseover", function() {
 				marker.setIcon("https://maps.google.com/mapfiles/ms/icons/green-dot.png");
@@ -150,22 +139,26 @@ function app() {
 		};
 
 		/* Set new info to infoWindow instance if a marker instance has been clicked */
-		var makeInfoWindow = function(location) {
+		var makeInfoWindow = function(finalizedData) {
 			infoWindow.setContent(
-				// `<h4 style="color: black;margin:0;">${location.name}</h4>`
-				`<h4 style="color: black;">${location.name}</h4>` +
+				`<h4 style="color: black;">${finalizedData.location.name}</h4>` +
 				`<hr>` +
-				`<p style="color: black;">${location.formatted_address}</p>` +
-				`<p style="color: black;">${location.location.lat}, ${location.location.lng}</p>`
+				`<img src="${finalizedData.photoUrl || ''}" alt="Featured Photo">` +
+				`<p style="color: black;">${finalizedData.venueFormattedAddress || finalizedData.errorMessage} </p>` +
+				`<hr>` +
+				`<p style="color: black;">${finalizedData.location.location.lat}, ${finalizedData.location.location.lng}</p>`
 			);
-			map.panTo(location.location);
-			return infoWindow;
+			map.panTo(finalizedData.location.location);
+			clearMarkersAnimation(finalizedData.marker);
+			infoWindow.open(map, finalizedData.marker);
 		};
+
 
 		/* Make markers using the initial locations array */
 		for (var i = 0, len = initialLocations.length; i < len; i++) {
 			makeMarker(initialLocations[i]);
 		}
+
 
 		/* IIFE to create markers on side navigation  */
 		var createMarkersList = function() {
@@ -188,23 +181,44 @@ function app() {
 			marker.setAnimation(google.maps.Animation.BOUNCE);
 		};
 
+		/* Get more details about the clicked marker */
+		var getMoreDetails = function(location, marker) {
+			var finalizedData;
+			$.ajax({
+				url: 'https://api.foursquare.com/v2/venues/explore',
+				data: {
+					client_id: 'EQHSJRH1EAUERANR5BGSHXPDOFAXWCE0YDDVF0T2UOWR00Q3',
+					client_secret: 'OSRMJEFTWUNJN4GPQYKZBWLIUKPIT4TEMI1ZPFO1LCJLHPLL',
+					ll: `${location.location.lat},${location.location.lng}`,
+					query: location.name,
+					venuePhotos: 1,
+					v: '20120609'
+				},
+				success: function(data) {
+					var foursquareVenue = data.response.groups[0].items[0].venue;
+					var venueFormattedAddress = foursquareVenue.location.formattedAddress;
+					var venuePhoto = foursquareVenue.photos.groups[0].items[0];
+					var photoUrl = `${venuePhoto.prefix}200x150${venuePhoto.suffix}`;
+					finalizedData = {location: location, marker: marker, venueFormattedAddress: venueFormattedAddress, photoUrl: photoUrl};
+					makeInfoWindow(finalizedData);
+					// map.panTo(location.location);
+					// clearMarkersAnimation(marker);
+					// infoWindow.open(map, marker);
+				},
+				error: function(errResults) {
+					finalizedData = {errorMessage: `Unable to get data from foursquare server error response`, location: location, marker: marker};
+					makeInfoWindow(finalizedData);
+				} 
+			})
+
+			// return finalizedData;
+		};
+
 		/* Do stuff if any of the markers list has been clicked */
 		this.clickedMarker = function(clicked) {
 			self.currentTitle(clicked.name);
 			toggleEffects();
-
-			window.setTimeout(function() {
-				infoWindow.setContent(
-					`<h4 style="color: black;">${clicked.name}</h4>` +
-					`<hr>` +
-					`<p style="color: black;">${clicked.location.formatted_address}</p>` +
-					`<p style="color: black;">${clicked.location.location.lat}, ${clicked.location.location.lng}</p>`
-				);
-
-				map.panTo(clicked.location.location);
-				clearMarkersAnimation(clicked.marker);
-				infoWindow.open(map, clicked.marker);
-			}, 300);
+			getMoreDetails(clicked.location, clicked.marker);
 		};
 
 		this.mouseOverMarker = function(obj) {
@@ -222,3 +236,23 @@ function app() {
 
 	ko.applyBindings(new AppViewModel());
 };
+
+function appError() {
+	console.log('Error loading the map.');
+}
+
+var sideNavToggle = document.getElementById("sideNavToggle");
+var topNavContainer = document.getElementById("topNavContainer");
+var sideNavContainer = document.getElementById("sideNavContainer");
+var mapContainer = document.getElementById("mapContainer");
+sideNavToggle.addEventListener("click", function() {
+	toggleEffects();
+});
+function toggleEffects() {
+	sideNavContainer.classList.toggle("side-nav-container-toggle");
+	mapContainer.classList.toggle("map-container-toggle");
+	topNavContainer.classList.toggle("top-nav-container-toggle");
+	setTimeout(function() {
+		google.maps.event.trigger(map, "resize");
+	}, 200);
+}
