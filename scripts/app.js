@@ -220,7 +220,7 @@ function app() {
 		/* Do stuff if any of the markers list has been clicked */
 		this.clickedMarker = function(clicked) {
 			self.currentTitle(clicked.name);
-			toggleEffects();
+			self.toggler();
 			getMoreDetails(clicked.location, clicked.marker);
 		};
 
@@ -235,6 +235,29 @@ function app() {
 		this.mouseOutMarker = function(obj) {
 			obj.marker.setIcon("https://maps.google.com/mapfiles/ms/icons/red-dot.png");
 		};
+
+
+		
+		this.toggleStatus = ko.observable(0);
+
+		this.sideNavContainer = ko.observable('');
+		this.topNavContainer = ko.observable('');
+		this.mapContainer = ko.observable('');
+
+		this.toggler = function() {
+			if (this.toggleStatus() === 0) {
+				this.sideNavContainer('side-nav-container-toggle');
+				this.topNavContainer('top-nav-container-toggle');
+				this.mapContainer('map-container-toggle');
+				this.toggleStatus(1)
+			} else {
+				this.sideNavContainer('');
+				this.topNavContainer('');
+				this.mapContainer('');
+				this.toggleStatus(0)
+			}
+		}
+
 	};
 
 	ko.applyBindings(new AppViewModel());
@@ -244,20 +267,4 @@ function appError() {
 	var errorMessage = 'Error loading the map, Please try again.';
 	document.getElementById('map').append(`<h3 id="error-message">${errorMessage}</h3>`);
 	alert(errorMessage);
-}
-
-var sideNavToggle = document.getElementById("sideNavToggle");
-var topNavContainer = document.getElementById("topNavContainer");
-var sideNavContainer = document.getElementById("sideNavContainer");
-var mapContainer = document.getElementById("mapContainer");
-sideNavToggle.addEventListener("click", function() {
-	toggleEffects();
-});
-function toggleEffects() {
-	sideNavContainer.classList.toggle("side-nav-container-toggle");
-	mapContainer.classList.toggle("map-container-toggle");
-	topNavContainer.classList.toggle("top-nav-container-toggle");
-	setTimeout(function() {
-		google.maps.event.trigger(map, "resize");
-	}, 200);
 }

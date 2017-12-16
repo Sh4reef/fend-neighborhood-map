@@ -14,15 +14,15 @@
 <body>
 
 		<div class="global-container">
-				<div id="topNavContainer" class="top-nav-container">
+				<div id="topNavContainer" data-bind="css: topNavContainer" class="top-nav-container">
 						<div id="topNavTitle" class="top-nav-title">
 								<h4 data-bind="text: updateTitle">Neighborhood Map</h4>
 						</div>
 				</div>
 				<div class="content-container">
-						<div id="sideNavContainer" class="side-nav-container">
+						<div id="sideNavContainer" data-bind="css: sideNavContainer" class="side-nav-container">
 								<div class="menu-bar-icon">
-										<a id="sideNavToggle" href="#">&#9776;</a>
+										<a id="sideNavToggle" data-bind="click: toggler" href="#">&#9776;</a>
 								</div>
 								<div class="side-nav-title">
 										<span>Bart locations</span>
@@ -37,7 +37,7 @@
 										</ul>
 								</div>
 						</div>
-						<div id="mapContainer" class="map-container">
+						<div id="mapContainer" data-bind="css: mapContainer" class="map-container">
 								<div id="map"></div>
 						</div>
 				</div>

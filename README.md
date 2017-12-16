@@ -26,3 +26,4 @@ sudo python -m SimpleHTTPServer 80
 ### New modifications #2
 * Markers list filtering improved
 * Error handler for google map api displays error message on the page
+* manipulated the layout/aesthetic components using Knockout to completely utilize the MVVM pattern
