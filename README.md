@@ -13,7 +13,7 @@ sudo python -m SimpleHTTPServer 80
 ```
 * Or open the **index.html** file directly
 
-### modifications #1
+### Modifications #1
 * Refactored the infoWindow
 * Moved maps API to be the last script 
 * Added third party API to retreive more data about the clicked marker
@@ -23,7 +23,7 @@ sudo python -m SimpleHTTPServer 80
 * Added error handler for google map api
 * Avoid cluttering the html
 
-### New modifications #2
+### Modifications #2
 * Markers list filtering improved
 * Error handler for google map api displays error message on the page
 * manipulated the layout/aesthetic components using Knockout to completely utilize the MVVM pattern

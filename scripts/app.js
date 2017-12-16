@@ -204,9 +204,6 @@ function app() {
 					var photoUrl = `${venuePhoto.prefix}200x150${venuePhoto.suffix}`;
 					finalizedData = {location: location, marker: marker, venueFormattedAddress: venueFormattedAddress, photoUrl: photoUrl};
 					makeInfoWindow(finalizedData);
-					// map.panTo(location.location);
-					// clearMarkersAnimation(marker);
-					// infoWindow.open(map, marker);
 				},
 				error: function(errResults) {
 					finalizedData = {errorMessage: `Unable to get data from foursquare server error response`, location: location, marker: marker};
@@ -266,5 +263,5 @@ function app() {
 function appError() {
 	var errorMessage = 'Error loading the map, Please try again.';
 	document.getElementById('map').innerHTML = `<h3 id="error-message">${errorMessage}</h3>`;
-	alert(errorMessage);
+	// alert(errorMessage);
 }
